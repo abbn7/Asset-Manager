@@ -1,0 +1,1154 @@
+# ════════════════════════════════════════════════════════════════
+
+# MASTER PROMPT — WHITE-LABEL E-COMMERCE STORE TEMPLATE
+
+# Role: AI Project Manager + Tech Lead
+
+# Version: 1.0.0
+
+# Methodology: Spec-Driven Development (GitHub Spec Kit)
+
+# ════════════════════════════════════════════════════════════════
+
+## ⚠️ CRITICAL SELF-VERIFICATION RULE (MANDATORY)
+
+Before starting ANY step, read this prompt fully.
+After completing EVERY step or file, stop and compare your output
+against this prompt. Ask yourself:
+→ Does it match the spec exactly?
+→ Is the folder structure correct?
+→ Are all required files present?
+→ Are the naming conventions followed?
+If the answer is NO to any of the above — fix it before continuing.
+Do NOT proceed to the next step until the current step passes verification.
+
+-----
+
+## 🎯 PROJECT OVERVIEW
+
+Build a production-ready, white-label e-commerce store template
+inspired by top Shopify stores and premium clothing/fashion brands
+(e.g. Zara, ASOS, H&M online experience).
+
+The store must be:
+
+- Completely EMPTY of real product data (white-label / data-agnostic)
+- Visually stunning and premium — better than existing Shopify themes
+- Fully functional with a powerful admin dashboard
+- Ready to be sold to any brand or retailer as a plug-and-play solution
+- Deployable on Vercel in under 10 minutes with zero friction
+
+-----
+
+## 🛠️ TECHNOLOGY STACK (MANDATORY — DO NOT DEVIATE)
+
+|Layer      |Technology                 |Reason                                       |
+|-----------|---------------------------|---------------------------------------------|
+|Framework  |Next.js 15 (App Router)    |SSR, RSC, file-based routing, Vercel-native  |
+|Styling    |Tailwind CSS v4 + shadcn/ui|Speed, consistency, beautiful components     |
+|Auth       |Clerk                      |Drop-in auth, social login, webhooks, free   |
+|Database   |Supabase (PostgreSQL)      |Managed Postgres, RLS, real-time, free tier  |
+|ORM        |Drizzle ORM                |Type-safe, lightweight, works with Supabase  |
+|Image CDN  |Cloudinary                 |Upload, transform, optimize images, free tier|
+|State      |Zustand                    |Cart and UI state management                 |
+|Forms      |React Hook Form + Zod      |Validation, type safety                      |
+|Payments   |Stripe                     |Industry standard, test mode for template    |
+|Email      |Resend                     |Transactional email, free tier               |
+|Deployment |Vercel                     |Zero-config, preview deploys, edge functions |
+|Spec Method|GitHub Spec Kit (SDD)      |Spec → Plan → Tasks → Code                   |
+
+### External Services & Free Tiers:
+
+- Supabase: supabase.com → free plan (500MB DB, 1GB storage)
+- Clerk: clerk.com → free plan (10,000 MAU)
+- Cloudinary: cloudinary.com → free plan (25GB storage, 25GB bandwidth)
+- Vercel: vercel.com → free hobby plan (unlimited deploys)
+- Stripe: stripe.com → test mode (no real charges in template)
+- Resend: resend.com → free plan (3,000 emails/month)
+
+-----
+
+## 📋 SPEC-KIT STRUCTURE (MANDATORY)
+
+Initialize spec-kit FIRST before writing any code.
+Create the following documentation files in /specs/:
+
+specs/
+├── spec.md              # What the project is and why it exists
+├── plan.md              # Technical architecture and decisions
+├── constitution.md      # Project standards, naming, principles
+├── requirements.md      # Full functional & non-functional requirements
+├── architecture.md      # System design, modules, data flow diagram
+├── api-spec.md          # All API routes documented (OpenAPI style)
+├── database-schema.md   # All tables, columns, relationships, RLS policies
+├── tasks/
+│   ├── 01-project-setup.md
+│   ├── 02-database-schema.md
+│   ├── 03-auth-integration.md
+│   ├── 04-storefront-ui.md
+│   ├── 05-product-system.md
+│   ├── 06-cart-checkout.md
+│   ├── 07-order-management.md
+│   ├── 08-admin-dashboard.md
+│   ├── 09-image-management.md
+│   ├── 10-email-notifications.md
+│   ├── 11-seo-performance.md
+│   └── 12-deployment.md
+
+Each task file must contain:
+
+- Goal
+- Dependencies (which tasks must be done before this)
+- Acceptance Criteria (checklist of what “done” means)
+- Files to create/modify
+- Self-verification checklist
+
+-----
+
+## 🗂️ FOLDER STRUCTURE (MANDATORY — EXACT)
+
+/
+├── .github/
+│   └── workflows/
+│       └── ci.yml                  # Lint, typecheck, build check
+├── specs/                          # All spec-kit files (see above)
+├── public/
+│   ├── placeholder/                # Empty placeholder assets
+│   └── icons/
+├── src/
+│   ├── app/                        # Next.js App Router
+│   │   ├── (storefront)/           # Public-facing store routes
+│   │   │   ├── layout.tsx          # Store layout (header, footer)
+│   │   │   ├── page.tsx            # Homepage
+│   │   │   ├── products/
+│   │   │   │   ├── page.tsx        # All products / catalog
+│   │   │   │   └── [slug]/
+│   │   │   │       └── page.tsx    # Single product page
+│   │   │   ├── collections/
+│   │   │   │   ├── page.tsx        # All collections
+│   │   │   │   └── [slug]/
+│   │   │   │       └── page.tsx    # Single collection
+│   │   │   ├── cart/
+│   │   │   │   └── page.tsx        # Cart page
+│   │   │   ├── checkout/
+│   │   │   │   └── page.tsx        # Checkout page
+│   │   │   ├── orders/
+│   │   │   │   ├── page.tsx        # My orders list
+│   │   │   │   └── [id]/
+│   │   │   │       └── page.tsx    # Single order detail
+│   │   │   ├── account/
+│   │   │   │   └── page.tsx        # Account settings
+│   │   │   ├── wishlist/
+│   │   │   │   └── page.tsx        # Saved / wishlist
+│   │   │   ├── search/
+│   │   │   │   └── page.tsx        # Search results
+│   │   │   └── blog/
+│   │   │       ├── page.tsx        # Blog listing
+│   │   │       └── [slug]/
+│   │   │           └── page.tsx    # Blog post
+│   │   ├── (auth)/                 # Clerk auth routes
+│   │   │   ├── sign-in/
+│   │   │   │   └── [[…sign-in]]/
+│   │   │   │       └── page.tsx
+│   │   │   └── sign-up/
+│   │   │       └── [[…sign-up]]/
+│   │   │           └── page.tsx
+│   │   ├── admin/                  # Admin Dashboard (protected)
+│   │   │   ├── layout.tsx          # Admin layout (sidebar, topbar)
+│   │   │   ├── page.tsx            # Dashboard overview
+│   │   │   ├── products/
+│   │   │   │   ├── page.tsx        # Products list + CRUD
+│   │   │   │   ├── new/
+│   │   │   │   │   └── page.tsx    # Add product
+│   │   │   │   └── [id]/
+│   │   │   │       └── page.tsx    # Edit product
+│   │   │   ├── collections/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [id]/
+│   │   │   │       └── page.tsx
+│   │   │   ├── orders/
+│   │   │   │   ├── page.tsx        # All orders
+│   │   │   │   └── [id]/
+│   │   │   │       └── page.tsx    # Order detail & status update
+│   │   │   ├── customers/
+│   │   │   │   └── page.tsx        # Customers list
+│   │   │   ├── discounts/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── new/
+│   │   │   │       └── page.tsx
+│   │   │   ├── blog/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [id]/
+│   │   │   │       └── page.tsx
+│   │   │   ├── analytics/
+│   │   │   │   └── page.tsx        # Revenue, orders, visitors chart
+│   │   │   └── settings/
+│   │   │       └── page.tsx        # Store settings, branding
+│   │   ├── api/
+│   │   │   ├── webhooks/
+│   │   │   │   ├── clerk/
+│   │   │   │   │   └── route.ts    # Clerk user sync
+│   │   │   │   └── stripe/
+│   │   │   │       └── route.ts    # Stripe payment events
+│   │   │   ├── products/
+│   │   │   │   ├── route.ts
+│   │   │   │   └── [id]/
+│   │   │   │       └── route.ts
+│   │   │   ├── collections/
+│   │   │   │   ├── route.ts
+│   │   │   │   └── [id]/
+│   │   │   │       └── route.ts
+│   │   │   ├── orders/
+│   │   │   │   ├── route.ts
+│   │   │   │   └── [id]/
+│   │   │   │       └── route.ts
+│   │   │   ├── cart/
+│   │   │   │   └── route.ts
+│   │   │   ├── checkout/
+│   │   │   │   └── route.ts
+│   │   │   ├── upload/
+│   │   │   │   └── route.ts
+│   │   │   ├── discounts/
+│   │   │   │   ├── route.ts
+│   │   │   │   └── validate/
+│   │   │   │       └── route.ts
+│   │   │   ├── search/
+│   │   │   │   └── route.ts
+│   │   │   ├── reviews/
+│   │   │   │   └── route.ts
+│   │   │   └── blog/
+│   │   │       └── route.ts
+│   │   ├── layout.tsx
+│   │   ├── not-found.tsx
+│   │   └── error.tsx
+│   ├── components/
+│   │   ├── ui/                     # shadcn/ui base components
+│   │   ├── storefront/
+│   │   │   ├── Navbar.tsx
+│   │   │   ├── Footer.tsx
+│   │   │   ├── HeroBanner.tsx
+│   │   │   ├── ProductCard.tsx
+│   │   │   ├── ProductGrid.tsx
+│   │   │   ├── ProductFilters.tsx
+│   │   │   ├── ProductImages.tsx
+│   │   │   ├── ProductVariants.tsx
+│   │   │   ├── CartDrawer.tsx
+│   │   │   ├── CartItem.tsx
+│   │   │   ├── CheckoutForm.tsx
+│   │   │   ├── CollectionCard.tsx
+│   │   │   ├── ReviewCard.tsx
+│   │   │   ├── ReviewForm.tsx
+│   │   │   ├── WishlistButton.tsx
+│   │   │   ├── SearchModal.tsx
+│   │   │   ├── NewsletterForm.tsx
+│   │   │   ├── Breadcrumb.tsx
+│   │   │   ├── SortSelect.tsx
+│   │   │   └── AnnouncementBar.tsx
+│   │   └── admin/
+│   │       ├── AdminSidebar.tsx
+│   │       ├── AdminTopbar.tsx
+│   │       ├── DataTable.tsx
+│   │       ├── StatsCard.tsx
+│   │       ├── RevenueChart.tsx
+│   │       ├── OrdersChart.tsx
+│   │       ├── ImageUploader.tsx
+│   │       ├── ProductForm.tsx
+│   │       ├── CollectionForm.tsx
+│   │       ├── DiscountForm.tsx
+│   │       └── OrderStatusBadge.tsx
+│   ├── lib/
+│   │   ├── supabase/
+│   │   │   ├── client.ts
+│   │   │   ├── server.ts
+│   │   │   └── admin.ts
+│   │   ├── clerk/
+│   │   │   └── helpers.ts
+│   │   ├── cloudinary/
+│   │   │   └── upload.ts
+│   │   ├── stripe/
+│   │   │   ├── client.ts
+│   │   │   └── helpers.ts
+│   │   ├── drizzle/
+│   │   │   ├── schema.ts
+│   │   │   ├── migrations/
+│   │   │   └── index.ts
+│   │   ├── validations/
+│   │   │   ├── product.ts
+│   │   │   ├── order.ts
+│   │   │   ├── checkout.ts
+│   │   │   └── discount.ts
+│   │   └── utils.ts
+│   ├── hooks/
+│   │   ├── useCart.ts
+│   │   ├── useWishlist.ts
+│   │   ├── useSearch.ts
+│   │   └── useAdmin.ts
+│   ├── stores/
+│   │   ├── cartStore.ts
+│   │   └── uiStore.ts
+│   ├── types/
+│   │   ├── index.ts
+│   │   ├── product.ts
+│   │   ├── order.ts
+│   │   ├── user.ts
+│   │   └── database.ts
+│   └── config/
+│       ├── site.ts
+│       └── navigation.ts
+├── drizzle.config.ts
+├── middleware.ts
+├── next.config.ts
+├── tailwind.config.ts
+├── tsconfig.json
+├── .env.example
+├── .env.local
+├── .gitignore
+├── package.json
+└── README.md
+
+-----
+
+## 🗄️ DATABASE SCHEMA (Supabase PostgreSQL via Drizzle)
+
+### Tables to create:
+
+TABLE: users
+
+- id (uuid, PK, default: gen_random_uuid())
+- clerk_id (text, unique, not null)
+- email (text, unique, not null)
+- name (text)
+- avatar_url (text)
+- role (enum: ‘admin’ | ‘customer’, default: ‘customer’)
+- created_at (timestamptz, default: now())
+- updated_at (timestamptz)
+
+TABLE: products
+
+- id (uuid, PK)
+- slug (text, unique, not null)
+- name (text, not null)
+- description (text)
+- price (numeric(10,2), not null)
+- compare_at_price (numeric(10,2))
+- cost_per_item (numeric(10,2))
+- sku (text)
+- barcode (text)
+- quantity (integer, default: 0)
+- track_quantity (boolean, default: true)
+- allow_backorder (boolean, default: false)
+- weight (numeric)
+- status (enum: ‘active’ | ‘draft’ | ‘archived’, default: ‘draft’)
+- is_featured (boolean, default: false)
+- metadata (jsonb)
+- seo_title (text)
+- seo_description (text)
+- created_at, updated_at
+
+TABLE: product_images
+
+- id (uuid, PK)
+- product_id (uuid, FK → products.id, CASCADE DELETE)
+- url (text, not null)
+- cloudinary_public_id (text)
+- alt_text (text)
+- position (integer, default: 0)
+- created_at
+
+TABLE: product_variants
+
+- id (uuid, PK)
+- product_id (uuid, FK → products.id, CASCADE DELETE)
+- name (text, not null)
+- options (jsonb)
+- price (numeric(10,2))
+- compare_at_price (numeric(10,2))
+- sku (text)
+- quantity (integer, default: 0)
+- image_url (text)
+- position (integer)
+- created_at
+
+TABLE: collections
+
+- id (uuid, PK)
+- slug (text, unique, not null)
+- name (text, not null)
+- description (text)
+- image_url (text)
+- cloudinary_public_id (text)
+- is_featured (boolean, default: false)
+- seo_title (text)
+- seo_description (text)
+- created_at, updated_at
+
+TABLE: product_collections (junction)
+
+- product_id (uuid, FK → products.id, CASCADE)
+- collection_id (uuid, FK → collections.id, CASCADE)
+- PRIMARY KEY (product_id, collection_id)
+
+TABLE: orders
+
+- id (uuid, PK)
+- order_number (serial, unique)
+- user_id (uuid, FK → users.id)
+- guest_email (text)
+- status (enum: ‘pending’|‘processing’|‘shipped’|‘delivered’|‘cancelled’|‘refunded’)
+- payment_status (enum: ‘unpaid’|‘paid’|‘partially_refunded’|‘refunded’)
+- payment_method (text)
+- stripe_payment_intent_id (text)
+- subtotal (numeric(10,2))
+- discount_amount (numeric(10,2), default: 0)
+- shipping_cost (numeric(10,2), default: 0)
+- tax_amount (numeric(10,2), default: 0)
+- total (numeric(10,2), not null)
+- currency (text, default: ‘USD’)
+- shipping_address (jsonb)
+- billing_address (jsonb)
+- notes (text)
+- discount_code_id (uuid, FK → discount_codes.id)
+- metadata (jsonb)
+- created_at, updated_at
+
+TABLE: order_items
+
+- id (uuid, PK)
+- order_id (uuid, FK → orders.id, CASCADE)
+- product_id (uuid, FK → products.id, SET NULL)
+- variant_id (uuid, FK → product_variants.id, SET NULL)
+- product_name (text, not null)
+- variant_name (text)
+- image_url (text)
+- quantity (integer, not null)
+- unit_price (numeric(10,2), not null)
+- total_price (numeric(10,2), not null)
+
+TABLE: discount_codes
+
+- id (uuid, PK)
+- code (text, unique, not null)
+- type (enum: ‘percentage’ | ‘fixed_amount’ | ‘free_shipping’)
+- value (numeric(10,2), not null)
+- minimum_order_amount (numeric(10,2))
+- maximum_discount_amount (numeric(10,2))
+- usage_limit (integer)
+- usage_count (integer, default: 0)
+- per_user_limit (integer, default: 1)
+- applicable_to (enum: ‘all’ | ‘products’ | ‘collections’)
+- applicable_ids (uuid[])
+- starts_at (timestamptz)
+- expires_at (timestamptz)
+- is_active (boolean, default: true)
+- created_at, updated_at
+
+TABLE: wishlists
+
+- id (uuid, PK)
+- user_id (uuid, FK → users.id, CASCADE)
+- product_id (uuid, FK → products.id, CASCADE)
+- variant_id (uuid, FK → product_variants.id, SET NULL)
+- created_at
+- UNIQUE (user_id, product_id, variant_id)
+
+TABLE: reviews
+
+- id (uuid, PK)
+- product_id (uuid, FK → products.id, CASCADE)
+- user_id (uuid, FK → users.id, CASCADE)
+- rating (integer, CHECK 1-5)
+- title (text)
+- body (text)
+- status (enum: ‘pending’ | ‘approved’ | ‘rejected’, default: ‘pending’)
+- is_verified_purchase (boolean, default: false)
+- created_at, updated_at
+- UNIQUE (product_id, user_id)
+
+TABLE: blog_posts
+
+- id (uuid, PK)
+- slug (text, unique, not null)
+- title (text, not null)
+- excerpt (text)
+- content (text)
+- cover_image_url (text)
+- cloudinary_public_id (text)
+- author_id (uuid, FK → users.id, SET NULL)
+- status (enum: ‘draft’ | ‘published’)
+- tags (text[])
+- seo_title (text)
+- seo_description (text)
+- published_at (timestamptz)
+- created_at, updated_at
+
+TABLE: store_settings (single row)
+
+- id (uuid, PK)
+- store_name (text, not null, default: ‘My Store’)
+- store_tagline (text)
+- logo_url (text)
+- favicon_url (text)
+- primary_color (text, default: ‘#000000’)
+- secondary_color (text, default: ‘#ffffff’)
+- accent_color (text)
+- currency (text, default: ‘USD’)
+- currency_symbol (text, default: ‘$’)
+- contact_email (text)
+- contact_phone (text)
+- address (jsonb)
+- social_links (jsonb)
+- announcement_text (text)
+- announcement_active (boolean, default: false)
+- free_shipping_threshold (numeric(10,2))
+- tax_rate (numeric(5,2), default: 0)
+- meta_title (text)
+- meta_description (text)
+- updated_at
+
+### RLS Policies (apply to ALL tables):
+
+- users: Users can only read/update their own row. Admins can read all.
+- products/collections: Public SELECT when status=‘active’. Admin full access.
+- orders: Users SELECT own orders. Admins full access.
+- order_items: Same as orders.
+- reviews: Public SELECT when status=‘approved’. Users INSERT own. Admin full access.
+- wishlists: Users full access to own rows only.
+- discount_codes: Admin full access. Auth users can read active codes.
+- blog_posts: Public SELECT when status=‘published’. Admin full access.
+- store_settings: Public SELECT. Admin UPDATE only.
+
+Helper function for Clerk JWT (run in Supabase SQL Editor):
+
+CREATE OR REPLACE FUNCTION requesting_user_id()
+RETURNS TEXT AS $$
+SELECT NULLIF(
+current_setting(‘request.jwt.claims’, true)::json->>‘sub’, ‘’
+)::text;
+$$ LANGUAGE SQL STABLE;
+
+-----
+
+## 🔗 API ROUTES SPECIFICATION
+
+All API routes in /src/app/api/
+All routes must return: { data, error, meta? }
+All routes use Zod for request validation.
+All routes return proper HTTP status codes.
+
+### Public Routes (no auth required):
+
+GET  /api/products                → list active products (pagination, filters, sort)
+GET  /api/products/[id]           → single product by id or slug
+GET  /api/collections             → list all collections
+GET  /api/collections/[id]        → single collection with products
+GET  /api/search?q=               → full-text search products + collections
+GET  /api/reviews/[productId]     → approved reviews for a product
+GET  /api/blog                    → published blog posts
+GET  /api/blog/[slug]             → single blog post
+POST /api/discounts/validate      → validate coupon code
+POST /api/checkout                → create Stripe payment intent
+
+### Authenticated Customer Routes:
+
+GET    /api/orders                → my orders
+GET    /api/orders/[id]           → my order detail
+POST   /api/reviews               → submit review
+GET    /api/wishlist              → my wishlist
+POST   /api/wishlist              → add to wishlist
+DELETE /api/wishlist/[id]         → remove from wishlist
+
+### Admin-Only Routes:
+
+POST   /api/products              → create product
+PUT    /api/products/[id]         → update product
+DELETE /api/products/[id]         → delete product
+POST   /api/collections           → create collection
+PUT    /api/collections/[id]      → update collection
+DELETE /api/collections/[id]      → delete collection
+GET    /api/orders?admin=true     → all orders
+PUT    /api/orders/[id]           → update order status
+GET    /api/customers             → list all users
+POST   /api/discounts             → create discount code
+PUT    /api/discounts/[id]        → update discount
+DELETE /api/discounts/[id]        → delete discount
+PUT    /api/reviews/[id]/status   → approve/reject review
+POST   /api/upload                → get Cloudinary signed upload URL
+GET    /api/analytics/overview    → revenue, orders, customers summary
+
+### Webhooks:
+
+POST /api/webhooks/clerk          → sync user to Supabase on register
+POST /api/webhooks/stripe         → handle payment confirmation, refunds
+
+-----
+
+## 🎨 STOREFRONT FEATURES (Complete List)
+
+### Homepage:
+
+- Announcement bar (dismissible, admin-configurable text)
+- Full-width hero banner with headline, subheadline, CTA button
+- Featured collections grid (image + name, link to collection)
+- Featured products grid (best sellers, new arrivals)
+- “Why shop with us” section (icons + text, fully editable)
+- Newsletter signup form (stores emails in Supabase)
+- Footer: logo, links, social icons, copyright
+
+### Product Catalog (/products):
+
+- Grid/List view toggle
+- Filter sidebar: by collection, price range, size, color, availability
+- Sort: newest, price low/high, best selling, most reviewed
+- Infinite scroll OR pagination (admin-configurable)
+- Product quick-view modal
+- Wishlist button on each product card
+
+### Product Detail Page (/products/[slug]):
+
+- Full image gallery with zoom + thumbnail strip
+- Variant selector (size, color with swatches)
+- Price display (original + sale price if applicable)
+- Stock indicator (In Stock / Low Stock / Out of Stock)
+- Add to Cart button + Buy Now button
+- Quantity selector
+- Product description (rich text)
+- Accordion sections: Description, Size Guide, Care Instructions, Returns
+- Reviews section: average rating, star breakdown, all reviews, submit form
+- Related products carousel
+- Share buttons (copy link, social)
+- Breadcrumb navigation
+
+### Cart:
+
+- Slide-in drawer cart (opens on “Add to Cart”)
+- Full cart page (/cart)
+- Item list with image, name, variant, qty stepper, remove button
+- Discount code input field
+- Order summary: subtotal, discount, shipping, tax, total
+- Checkout button (opens Stripe)
+
+### Checkout (/checkout):
+
+- Single-page checkout (Shopify-style)
+- Contact: email (or logged-in user)
+- Shipping address form (with country selector)
+- Shipping method selector
+- Payment: Stripe Elements (card, Apple Pay, Google Pay)
+- Order summary sidebar
+- Guest checkout allowed
+- Logged-in user can save address
+
+### Post-Checkout:
+
+- Order confirmation page with order number
+- Confirmation email sent via Resend
+- Order appears in “My Orders”
+
+### My Orders (/orders):
+
+- List of past orders with status badge
+- Order detail: items, shipping address, timeline, tracking
+
+### Account (/account):
+
+- Profile info (name, email via Clerk)
+- Saved addresses
+- Change password (via Clerk)
+
+### Wishlist (/wishlist):
+
+- Saved products list
+- Add to Cart from wishlist
+- Remove from wishlist
+
+### Search:
+
+- Full-text search modal (CMD+K shortcut)
+- Real-time search results with product images
+
+### Blog (/blog):
+
+- Blog listing with cards
+- Single post with rich content, author, date, tags
+
+-----
+
+## 🖥️ ADMIN DASHBOARD FEATURES (Complete List)
+
+Access: /admin — protected, only users with role=‘admin’ can access.
+Admin check must be done server-side (Clerk metadata OR Supabase users.role).
+
+### Dashboard Overview (/admin):
+
+- Stats cards: Total Revenue, Orders Today, New Customers, Avg Order Value
+- Revenue chart (last 30 days, line chart)
+- Orders by status (donut/pie chart)
+- Recent orders table
+- Low stock alerts
+- Quick actions: Add Product, Create Discount, View Orders
+
+### Products (/admin/products):
+
+- Sortable, filterable, searchable data table
+- Status filter (active / draft / archived)
+- Bulk actions: publish, archive, delete
+- Add Product form with:
+  - Name, slug (auto-generated), description (rich text editor)
+  - Images: drag-drop upload to Cloudinary (multi-image, reorder)
+  - Pricing: price, compare-at price, cost per item
+  - Inventory: SKU, barcode, quantity, track inventory toggle
+  - Variants: add option types (Size, Color, etc.) and values
+  - Collections: multi-select
+  - SEO: title, description, URL preview
+  - Status: active / draft
+- Edit Product: same form, pre-filled
+
+### Collections (/admin/collections):
+
+- Table + add/edit form
+- Assign products to collection (multi-select)
+- Upload collection image
+
+### Orders (/admin/orders):
+
+- Full orders table with search, filter by status/date
+- Order detail page:
+  - Customer info + order items
+  - Status update dropdown (processing → shipped → delivered)
+  - Tracking number input
+  - Payment status
+  - Print invoice button
+  - Refund button (via Stripe)
+
+### Customers (/admin/customers):
+
+- Users table with name, email, order count, total spent, join date
+- Click to view customer profile and order history
+
+### Discounts (/admin/discounts):
+
+- Table of all discount codes with usage stats
+- Create: code, type (% or fixed), value, min order, expiry, usage limit
+
+### Reviews (/admin/reviews):
+
+- Table of pending/approved/rejected reviews
+- Approve or reject with one click
+- Filter by product or status
+
+### Blog (/admin/blog):
+
+- Post list with status badges
+- Rich text editor (TipTap or Quill)
+- Cover image upload
+- SEO fields
+- Publish / Save Draft
+
+### Analytics (/admin/analytics):
+
+- Revenue over time (selectable range: 7d, 30d, 90d, custom)
+- Top products by revenue
+- Orders by status breakdown
+- Customer acquisition (new vs returning)
+- Average order value trend
+
+### Settings (/admin/settings):
+
+- Store name, tagline, logo upload, favicon upload
+- Brand colors (primary, secondary, accent) with color picker
+- Currency and tax rate
+- Contact info (email, phone, address)
+- Social media links
+- Announcement bar text + toggle
+- Free shipping threshold
+- SEO defaults
+
+-----
+
+## 🔐 AUTHENTICATION & AUTHORIZATION
+
+### Clerk Setup:
+
+- Email/password + Google + Apple social login
+- Webhook: POST /api/webhooks/clerk (sync user to Supabase on create/update/delete)
+- Admin role: set publicMetadata.role = “admin” in Clerk dashboard for the owner
+
+### Middleware (/middleware.ts):
+
+// Protect all /admin/* routes — redirect to /sign-in if not authenticated
+// Protect /orders, /account, /wishlist, /checkout — redirect to /sign-in
+// Allow all other routes to be public
+
+### Admin Guard (server-side):
+
+Every /admin route must verify:
+
+1. User is authenticated (Clerk session)
+1. User has role=‘admin’ (check Clerk publicMetadata.role OR Supabase users.role)
+   If not → redirect to homepage with 403.
+
+### Supabase + Clerk Integration (2025 method):
+
+- Add Clerk as Third-Party Auth Provider in Supabase dashboard
+- Use Clerk JWT in all Supabase client calls
+- Apply RLS policies using requesting_user_id() function
+
+-----
+
+## 🖼️ IMAGE MANAGEMENT (Cloudinary)
+
+### Upload Flow:
+
+1. Admin requests signed upload URL from /api/upload
+1. Client uploads directly to Cloudinary using the signed URL
+1. Cloudinary returns the public_id and secure_url
+1. Store the URL and public_id in Supabase
+
+### Transformations (via Cloudinary URL parameters):
+
+- Product thumbnails: w_400,h_400,c_fill,f_auto,q_auto
+- Product detail: w_800,h_800,c_fill,f_auto,q_auto
+- Collection banner: w_1200,h_600,c_fill,f_auto,q_auto
+- Blog cover: w_1200,h_630,c_fill,f_auto,q_auto
+
+### ImageUploader Component:
+
+- Drag-and-drop zone
+- Multi-file upload
+- Preview thumbnails with drag-to-reorder
+- Delete button (calls Cloudinary destroy + removes from DB)
+
+-----
+
+## 📧 EMAIL NOTIFICATIONS (Resend)
+
+### Templates to create (React Email components in /src/emails/):
+
+1. order-confirmation.tsx — Sent when order is placed
+- Order number, items list, total, shipping address, estimated delivery
+1. order-shipped.tsx — Sent when status changes to ‘shipped’
+- Order number, tracking number, carrier
+1. order-delivered.tsx — Sent when status changes to ‘delivered’
+- Thank you message, review request link
+1. welcome.tsx — Sent when new user registers (via Clerk webhook)
+- Welcome message, link to start shopping
+
+All email templates must be:
+
+- Mobile-responsive
+- On-brand (uses store logo from store_settings)
+- Located in /src/emails/
+
+-----
+
+## 🚀 SEO & PERFORMANCE
+
+### Metadata (per page):
+
+- Every page has generateMetadata() returning title, description, OG image
+- Product pages: title = product name, description = first 160 chars
+- Dynamic OG images using next/og for product and collection pages
+
+### Technical SEO:
+
+- sitemap.xml (auto-generated at /sitemap.xml)
+- robots.txt
+- Canonical URLs
+- JSON-LD structured data on product pages (Product schema)
+- Breadcrumb schema on collection and product pages
+
+### Performance:
+
+- All images use next/image with proper sizes
+- Cloudinary auto-format and auto-quality
+- React Server Components by default (minimize ‘use client’)
+- Suspense boundaries with skeleton loaders on all data-fetching routes
+- Font: use next/font/google — ONE display font + ONE body font
+- No layout shift (proper image dimensions always specified)
+
+-----
+
+## 🎨 DESIGN SPECIFICATIONS
+
+### Visual Direction:
+
+Premium, editorial, luxury fashion aesthetic.
+Clean with bold typography. Better than Shopify’s Prestige, Dawn, Impulse themes.
+
+### Typography:
+
+- Display font: “Playfair Display” (serif, for headings and hero text)
+- Body font: “DM Sans” (sans-serif, for body text and UI)
+- Load via next/font/google
+
+### Color System (CSS variables):
+
+–color-primary: #0a0a0a;       /* Near black */
+–color-secondary: #f5f5f0;     /* Warm white */
+–color-accent: #c9a96e;        /* Gold accent */
+–color-text: #1a1a1a;
+–color-text-muted: #6b7280;
+–color-border: #e5e5e0;
+–color-surface: #ffffff;
+–color-error: #ef4444;
+–color-success: #22c55e;
+
+### Animations:
+
+- Page transitions: subtle fade-in on route change
+- Product images: smooth hover scale on card
+- Cart drawer: slide from right
+- Filters: smooth collapse/expand
+- Add to Cart: button pulse animation on success
+- Scroll-triggered reveal on homepage sections
+
+### Layout:
+
+- Max content width: 1400px
+- Admin sidebar: 260px fixed
+- Product grid: 2 cols mobile, 3 cols tablet, 4 cols desktop
+- Consistent spacing scale: 4px, 8px, 16px, 24px, 32px, 48px, 64px, 96px
+
+-----
+
+## 📦 ENVIRONMENT VARIABLES (.env.example)
+
+# Clerk
+
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_xxx
+CLERK_SECRET_KEY=sk_test_xxx
+CLERK_WEBHOOK_SECRET=whsec_xxx
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
+
+# Supabase
+
+NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=xxx
+SUPABASE_SERVICE_ROLE_KEY=xxx
+
+# Cloudinary
+
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=xxx
+CLOUDINARY_API_KEY=xxx
+CLOUDINARY_API_SECRET=xxx
+
+# Stripe
+
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_xxx
+STRIPE_SECRET_KEY=sk_test_xxx
+STRIPE_WEBHOOK_SECRET=whsec_xxx
+
+# Resend
+
+RESEND_API_KEY=re_xxx
+RESEND_FROM_EMAIL=noreply@yourdomain.com
+
+# App
+
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+-----
+
+## 🚀 DEPLOYMENT GUIDE (Vercel — Step by Step)
+
+### Prerequisites:
+
+- Node.js 20+ installed
+- Git installed
+- GitHub account
+- Accounts created on: Vercel, Supabase, Clerk, Cloudinary, Stripe, Resend
+
+### Step 1 — Supabase Setup:
+
+1. Go to supabase.com → New Project → choose region
+1. Wait for project to initialize (~2 minutes)
+1. Go to SQL Editor → run the schema migrations (in /drizzle/migrations/)
+1. Go to Authentication → Providers → add Clerk as Third-Party Auth
+1. Copy Project URL and anon key from Settings → API
+
+### Step 2 — Clerk Setup:
+
+1. Go to clerk.com → Create Application
+1. Enable Email/Password + Google + Apple
+1. Go to API Keys → copy publishable key and secret key
+1. Go to Webhooks → Add Endpoint → URL: https://your-domain.vercel.app/api/webhooks/clerk
+1. Subscribe to: user.created, user.updated, user.deleted
+1. Copy the webhook signing secret
+1. To set yourself as admin: Users → select your user → Metadata → add {“role”: “admin”}
+
+### Step 3 — Cloudinary Setup:
+
+1. Go to cloudinary.com → Dashboard
+1. Copy Cloud Name, API Key, API Secret from the top
+1. Settings → Upload → Add upload preset named “ecommerce_products” (unsigned)
+
+### Step 4 — Stripe Setup:
+
+1. Go to stripe.com → Developers → API Keys
+1. Copy publishable key and secret key (use test mode keys)
+1. Webhooks → Add endpoint → https://your-domain.vercel.app/api/webhooks/stripe
+1. Events: payment_intent.succeeded, payment_intent.payment_failed, charge.refunded
+
+### Step 5 — Resend Setup:
+
+1. Go to resend.com → API Keys → Create Key → copy it
+1. Domains → Add your domain and verify (or use onboarding@resend.dev for testing)
+
+### Step 6 — GitHub Push:
+
+git init
+git add .
+git commit -m “chore: initial store template”
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+git push -u origin main
+
+### Step 7 — Deploy to Vercel:
+
+1. Go to vercel.com → New Project → Import from GitHub
+1. Select your repository
+1. Framework Preset: Next.js (auto-detected)
+1. Environment Variables: paste ALL variables from .env.example with real values
+1. Click Deploy
+1. Wait ~2 minutes for build
+1. Visit your Vercel URL → store is live ✅
+
+### Step 8 — Post-Deployment:
+
+1. Update Clerk webhook URL to your Vercel URL
+1. Update Stripe webhook URL to your Vercel URL
+1. Set NEXT_PUBLIC_APP_URL to your Vercel URL in Vercel dashboard
+1. Trigger a Vercel redeploy (Deployments → Redeploy)
+
+### Ongoing Deployments:
+
+Every git push to main automatically redeploys on Vercel.
+No manual steps needed after initial setup.
+
+-----
+
+## ✅ IMPLEMENTATION ORDER (Follow This Exactly)
+
+Execute tasks in this exact order. Do NOT skip or reorder steps.
+After EACH step, run the self-verification checklist in the task file.
+
+1. Setup          → Init Next.js 15 + Tailwind + shadcn/ui + all dependencies
+1. Spec-Kit       → Create all files in /specs/ before writing any feature code
+1. Database       → Write Drizzle schema → generate migration → apply to Supabase
+1. Auth           → Clerk middleware + sign-in/sign-up pages + webhook sync
+1. Storefront Layout → Navbar, Footer, AnnouncementBar
+1. Homepage       → Hero, featured collections, featured products, newsletter
+1. Product System → Catalog page, product detail page, all components
+1. Collections    → Collection listing and detail pages
+1. Cart           → CartDrawer + CartPage + Zustand store
+1. Checkout       → Checkout page + Stripe integration
+1. Orders         → Order confirmation + my orders + order detail
+1. Account & Wishlist → Account page, wishlist page
+1. Search & Blog  → Search modal, blog listing, blog post
+1. Admin Layout   → Sidebar, topbar, route protection
+1. Admin Products → Full CRUD with Cloudinary upload
+1. Admin Collections → Full CRUD
+1. Admin Orders   → Order management, status updates
+1. Admin Customers → Customer list and detail
+1. Admin Discounts → Create, manage discount codes
+1. Admin Reviews  → Moderate reviews
+1. Admin Blog     → Full CMS
+1. Admin Analytics → Charts and stats
+1. Admin Settings → Store settings with logo upload
+1. Emails         → All Resend email templates
+1. SEO            → Metadata, sitemap, robots, JSON-LD
+1. Performance    → Audit with Lighthouse, fix any issues
+1. README         → Complete setup and deployment documentation
+1. Final Verify   → Run full checklist against this prompt
+
+-----
+
+## 📋 FINAL CHECKLIST (Run Before Declaring Done)
+
+### Spec-Kit:
+
+[ ] specs/spec.md exists and is complete
+[ ] specs/plan.md exists and is complete
+[ ] specs/requirements.md exists and is complete
+[ ] specs/architecture.md exists with system diagram
+[ ] specs/api-spec.md documents all 30+ API routes
+[ ] specs/database-schema.md documents all 13 tables
+[ ] specs/constitution.md defines naming conventions
+[ ] All 12 task files exist in specs/tasks/
+
+### Folder Structure:
+
+[ ] Matches the exact structure defined above
+[ ] No extra files or folders not in the spec
+[ ] All naming conventions followed (kebab-case for files, PascalCase for components)
+
+### Features:
+
+[ ] Homepage renders with all sections
+[ ] Product catalog works with filtering and sorting
+[ ] Product detail shows images, variants, add to cart
+[ ] Cart drawer opens and functions correctly
+[ ] Checkout creates Stripe payment intent
+[ ] Orders are saved to Supabase after payment
+[ ] Admin dashboard is fully protected (admin-only)
+[ ] All CRUD operations work in admin
+[ ] Image upload to Cloudinary works
+[ ] Discount codes validate and apply
+[ ] Reviews can be submitted and moderated
+[ ] Blog CMS works end-to-end
+[ ] Analytics charts render
+[ ] Store settings can be updated and persist
+[ ] All emails send correctly via Resend
+[ ] Wishlist add/remove works
+[ ] Search returns relevant results
+
+### Technical:
+
+[ ] Zero TypeScript errors (tsc –noEmit passes)
+[ ] Zero ESLint errors
+[ ] All environment variables documented in .env.example
+[ ] RLS policies applied to all Supabase tables
+[ ] Clerk auth protects all required routes
+[ ] No sensitive keys hardcoded anywhere
+[ ] Vercel deployment succeeds on first try
+[ ] Lighthouse score: Performance ≥ 85, SEO ≥ 95, Accessibility ≥ 90
+
+### White-Label:
+
+[ ] Zero real product data in the codebase
+[ ] Zero real images (only placeholder URLs)
+[ ] Zero real store name (uses placeholder “Your Store Name”)
+[ ] All store info comes from store_settings table
+[ ] README clearly explains how to customize and brand the store
+
+-----
+
+## 🔁 SELF-VERIFICATION LOOP (MANDATORY FOR THE AI)
+
+At the end of EVERY task:
+
+1. Re-read the relevant section of this prompt
+1. Compare what you built against the spec
+1. List any gaps or deviations
+1. Fix all gaps before moving to the next task
+1. Only move on when you can check off every acceptance criterion
+
+This self-verification loop is non-negotiable.
+It is what separates a correct implementation from a broken one.
+
+-----
+
+## 🏁 DELIVERABLE
+
+A complete, production-ready, white-label e-commerce store template that:
+
+- Can be deployed on Vercel in under 10 minutes
+- Looks premium and better than existing Shopify themes
+- Has a full-featured admin dashboard
+- Is completely empty of brand-specific data
+- Is ready to be handed to any brand owner as a plug-and-play solution
+- Has comprehensive documentation for setup and customization
+
+Good luck. Build something exceptional.
